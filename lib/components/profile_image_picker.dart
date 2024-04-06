@@ -2,6 +2,7 @@
 
 import "dart:async";
 import "dart:io";
+// import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:image_picker/image_picker.dart";
@@ -11,8 +12,9 @@ import "package:sparing_partners/components/profile_controller.dart";
 // ignore: must_be_immutable
 class ProfileImagePicker extends StatelessWidget {
   File? pickedfile;
-  ImagePicker imagePicker = ImagePicker();
-  ProfileController signUpController = Get.find();
+  
+    final ImagePicker imagePicker = ImagePicker();
+  final ProfileController signUpController = Get.find();
 
   ProfileImagePicker({super.key});
 
@@ -50,7 +52,7 @@ class ProfileImagePicker extends StatelessWidget {
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 // maxRadius: 40,
-                child: Icon(Icons.camera_enhance_rounded,
+                child: Icon(Icons.add_a_photo,
                     size: 30,
                     color: appcolors
                         .orangeColor // ICON THAT SHOWS BELOW CIRCLE SHAPE

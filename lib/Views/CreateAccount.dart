@@ -1,5 +1,7 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +13,11 @@ import 'package:sparing_partners/components/button.dart';
 import 'package:sparing_partners/components/checkbox.dart';
 import 'package:sparing_partners/components/colors.dart';
 import 'package:sparing_partners/components/cus_text.dart';
-import 'package:sparing_partners/components/profile_image_picker.dart';
+import 'package:sparing_partners/components/myprofilepicker.dart';
+// import 'package:sparing_partners/components/profile_image_picker.dart';
 import 'package:sparing_partners/components/textfield.dart';
+
+import 'package:firebase_storage/firebase_storage.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -29,7 +34,10 @@ class _SignUpState extends State<SignUp> {
   TextEditingController locationtextcontroller = TextEditingController();
   List<bool> checkboxStates = List.filled(19, false);
   String? _userLocation;
-  final firestore = FirebaseFirestore.instance.collection("Users");
+  final firestore = FirebaseFirestore.instance.collection("Users"); 
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+   
+
 
   Future<void> _getUserLocation() async {
     LocationPermission permission = await Geolocator.requestPermission();
@@ -64,6 +72,7 @@ class _SignUpState extends State<SignUp> {
       );
     }
   }  
+  
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -78,7 +87,7 @@ class _SignUpState extends State<SignUp> {
           padding: const EdgeInsets.all(20.0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Center(child: ProfileImagePicker()),
+            Center(child: myprofileimagepicker()),
             CTextField(
                 controller: fullnametextcontroller,
                 labelText: "Full Name",
@@ -338,6 +347,7 @@ class _SignUpState extends State<SignUp> {
               child: Button(
                   buttonname: "Create Account",
                   ontap: () async {
+                    
                     if (fullnametextcontroller.text.isEmpty ||
                         emailtextcontroller.text.isEmpty ||
                         passwordtextcontroller.text.isEmpty ||
@@ -423,6 +433,28 @@ class _SignUpState extends State<SignUp> {
                           'weightclass': weightclass,
                           // Add more fields if needed
                         };
+                        
+  Future<String> uploadImageToStorage(String childname, Uint8List file) async {
+    Reference ref = _storage.ref().child(childname);
+    UploadTask uploadTask = ref.putData(file);
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+  Future<String> saveData({
+    required Uint8List file,
+  }) async {
+    String resp = "Some Error Occurred";
+    try {
+      String imageUrl = await uploadImageToStorage('ProfileImage', file);
+      resp = imageUrl;
+    } catch (err) {
+      resp = err.toString();
+    }
+    return resp;
+  };
+
 
                         // Store user data in Firestore
                         await firestore.doc(userId).set(userData);
