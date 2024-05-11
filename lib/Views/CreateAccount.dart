@@ -87,7 +87,7 @@ class _SignUpState extends State<SignUp> {
           padding: const EdgeInsets.all(20.0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Center(child: myprofileimagepicker()),
+            const Center(child: myprofileimagepicker()),
             CTextField(
                 controller: fullnametextcontroller,
                 labelText: "Full Name",
@@ -453,7 +453,7 @@ class _SignUpState extends State<SignUp> {
       resp = err.toString();
     }
     return resp;
-  };
+  }
 
 
                         // Store user data in Firestore
