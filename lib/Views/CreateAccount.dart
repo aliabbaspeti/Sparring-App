@@ -108,9 +108,7 @@ class _SignUpState extends State<SignUp> {
           padding: const EdgeInsets.all(20.0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            // const Center(
-            //   child: myprofileimagepicker(),
-            // ),
+           
 
             Center(
               child: InkWell(
