@@ -2,16 +2,19 @@
 
 import "dart:async";
 import "dart:io";
+// import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:image_picker/image_picker.dart";
+import "package:sparing_partners/components/colors.dart";
 import "package:sparing_partners/components/profile_controller.dart";
 
 // ignore: must_be_immutable
 class ProfileImagePicker extends StatelessWidget {
   File? pickedfile;
-  ImagePicker imagePicker = ImagePicker();
-  ProfileController signUpController = Get.find();
+  
+    final ImagePicker imagePicker = ImagePicker();
+  final ProfileController signUpController = Get.find();
 
   ProfileImagePicker({super.key});
 
@@ -21,14 +24,23 @@ class ProfileImagePicker extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Obx(
-          () => CircleAvatar(
-            backgroundImage:
-                signUpController.isProfileImagePathSet.value == true
-                    ? FileImage(File(signUpController.profileImagePath.value))
-                        as ImageProvider
-                    : AssetImage("Assets/img/twoplayersshadow.png"),
-            backgroundColor: Colors.white12,
-            radius: 80,
+          () => Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              border: Border.all(
+                color: appcolors.orangeColor,
+                width: 2,
+              ),
+            ),
+            child: CircleAvatar(
+              backgroundImage:
+                  signUpController.isProfileImagePathSet.value == true
+                      ? FileImage(File(signUpController.profileImagePath.value))
+                          as ImageProvider
+                      : AssetImage("lib/Asset/img/twoplayersshadow.png"),
+              backgroundColor: Colors.white12,
+              radius: 80,
+            ),
           ),
         ),
         Positioned(
@@ -40,16 +52,16 @@ class ProfileImagePicker extends StatelessWidget {
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 // maxRadius: 40,
-                child: Icon(Icons.camera_enhance_rounded,
+                child: Icon(Icons.add_a_photo,
                     size: 30,
-                    color:
-                        Colors.redAccent // ICON THAT SHOWS BELOW CIRCLE SHAPE
+                    color: appcolors
+                        .orangeColor // ICON THAT SHOWS BELOW CIRCLE SHAPE
                     ),
               ),
               onTap: () {
                 showModalBottomSheet(
                     context: context,
-                    backgroundColor: Colors.redAccent,
+                    backgroundColor: appcolors.orangeColor,
                     builder: (context) => bottomSheet(context));
               },
             ),
