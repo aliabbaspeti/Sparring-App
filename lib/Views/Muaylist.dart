@@ -32,10 +32,10 @@ class _MuayPlayersListState extends State<MuayPlayersList> {
                         itemBuilder: (context, index) {
                           var category =
                               snapshot.data?.docs[index]["categories"];
-                          bool isMuayThaiPlayer =
-                              category.contains("Muay Thai");
-                          if (isMuayThaiPlayer) {
+                          bool isMuayplayer = category.contains("Muay Thai");
+                          if (isMuayplayer) {
                             var uid = snapshot.data?.docs[index].id;
+                            var profilePic = snapshot.data?.docs[index].data()["profile"];
                             return InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -45,10 +45,11 @@ class _MuayPlayersListState extends State<MuayPlayersList> {
                                             PlayerProfile(uid: uid)));
                               },
                               child: ListTile(
-                                leading: const Image(
-                                    image: AssetImage(
-                                        "lib/Asset/img/Saenchaimuay.jpg"),
-                                    height: 200),
+                                leading:  Image(
+                                    image: profilePic != null
+                                              ? NetworkImage(profilePic)
+                                              : const AssetImage("lib/Asset/img/twoplayersshadow.png") as ImageProvider<Object>,
+                                    height: 200, width: 100),
                                 title: CTextBold(
                                     data:
                                         "${snapshot.data?.docs[index]["fullName"]}"),

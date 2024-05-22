@@ -41,6 +41,7 @@ class _PlayerProfileState extends State<PlayerProfile> {
               var fullName = userData['fullName'];
               var location = userData['location'];
               var categories= userData['categories'];
+              var profilePic = userData['profile'];
               bool isBoxing =
                   categories != null && categories.contains('Boxing');
               bool isWrestling =
@@ -96,10 +97,11 @@ class _PlayerProfileState extends State<PlayerProfile> {
                           top: 25,
                           child: Column(
                             children: [
-                              const CircleAvatar(
-                                radius: 80,
-                                backgroundImage:
-                                    AssetImage('lib/Asset/img/muhammadali.png'),
+                          CircleAvatar(
+                            radius: 80,
+                            backgroundImage: profilePic != null
+                                              ? NetworkImage(profilePic)
+                                              : AssetImage("lib/Asset/img/twoplayersshadow.png") as ImageProvider<Object>?,
                               ),
                               CTextBold(
                                 data: fullName,
@@ -128,7 +130,10 @@ class _PlayerProfileState extends State<PlayerProfile> {
                                 children: [
                                   Expanded(
                                     child: IconButton(
-                                        onPressed: () {
+                                        onPressed: () async {
+                                          await FirebaseFirestore.instance
+                                              .collection("userChat")
+                                              .doc(widget.uid);
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(

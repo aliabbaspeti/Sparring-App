@@ -35,6 +35,7 @@ class _BoxingPlayerListState extends State<BoxingPlayerList> {
                           bool isBoxingplayer = category.contains("Boxing");
                           if (isBoxingplayer) {
                             var uid = snapshot.data?.docs[index].id;
+                            var profilePic = snapshot.data?.docs[index].data()["profile"];
                             return InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -44,10 +45,11 @@ class _BoxingPlayerListState extends State<BoxingPlayerList> {
                                             PlayerProfile(uid: uid)));
                               },
                               child: ListTile(
-                                leading: const Image(
-                                    image: AssetImage(
-                                        "lib/Asset/img/muhammadali.png"),
-                                    height: 200),
+                                leading:  Image(
+                                    image: profilePic != null
+                                              ? NetworkImage(profilePic)
+                                              : const AssetImage("lib/Asset/img/twoplayersshadow.png") as ImageProvider<Object>,
+                                    height: 200, width: 100),
                                 title: CTextBold(
                                     data:
                                         "${snapshot.data?.docs[index]["fullName"]}"),
